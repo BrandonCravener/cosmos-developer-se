@@ -5,7 +5,7 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import { AppProps } from 'next/dist/next-server/lib/router/router'
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from "../components/layout"
+import Layout from "../components/layout/layout"
 import { Provider } from 'next-auth/client'
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';

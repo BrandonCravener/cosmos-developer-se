@@ -1,5 +1,5 @@
-import Grid, { GridSpacing } from '@material-ui/core/Grid';
-import { signIn, signOut, useSession } from 'next-auth/client'
+import Grid from '@material-ui/core/Grid';
+import { useSession } from 'next-auth/client'
 
 import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
@@ -11,6 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '../styles/Home.module.css'
+import Account from '../components/account/account';
 
 export default function Home() {
   const [session, loading] = useSession()
@@ -28,6 +29,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <Account />
         <Grid container
           className={styles.grid}
           justify="center"
