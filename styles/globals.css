@@ -12,3 +12,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+  }
+}

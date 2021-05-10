@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import styles from './layout.module.css'
 import * as THREE from 'three'
+
+import { useEffect, useRef, useState } from 'react'
+
 import NET from "vanta/dist/vanta.net.min";
+import styles from './layout.module.css'
 
 export default function Layout({ children }) {
     const [vantaEffect, setVantaEffect] = useState(0)
