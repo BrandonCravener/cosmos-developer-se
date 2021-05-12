@@ -1,0 +1,9 @@
+{
+    "extends": "@ijsto",
+    "rules": {
+        "semi": [
+            2,
+            "always"
+        ]
+    }
+}

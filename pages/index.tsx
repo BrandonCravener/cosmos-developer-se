@@ -1,20 +1,19 @@
-import Grid from '@material-ui/core/Grid';
-import { useSession } from 'next-auth/client'
-
+import Account from '../components/account/account';
 import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
-import Head from 'next/head'
+import Grid from '@material-ui/core/Grid';
+import Head from 'next/head';
 import IconButton from '@material-ui/core/IconButton';
-import Image from 'next/image'
+import Image from 'next/image';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import styles from '../styles/Home.module.css'
-import Account from '../components/account/account';
+import styles from '../styles/Home.module.css';
+import { useSession } from 'next-auth/client';
 
 export default function Home() {
-  const [session, loading] = useSession()
+  const [session, loading] = useSession();
 
   return (
     <>
@@ -59,5 +58,5 @@ export default function Home() {
 
       </main>
     </>
-  )
+  );
 }

@@ -1,13 +1,28 @@
-import IconButton from '@material-ui/core/IconButton';
+import { signIn, signOut, useSession } from 'next-auth/client';
+
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import styles from "./account.module.css";
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    icon: {
+        top: '4px',
+        right: '4px',
+        position: 'absolute',
+        'z-index': 99,
+        [theme.breakpoints.up('sm')]: {
+            top: '8px',
+            right: '8px',
+        },
+    }
+}));
 
 export default function Account() {
-    const [session, loading] = useSession()
+    const classes = useStyles();
+    const [session, loading] = useSession();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -21,16 +36,16 @@ export default function Account() {
     const login = () => {
         signIn();
         setAnchorEl(null);
-    }
+    };
 
     const logout = () => {
         signOut();
         setAnchorEl(null);
-    }
+    };
 
     return (
         <>
-            <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={styles.icon}>
+            <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
                 <AccountCircleIcon />
             </IconButton>
             <Menu
@@ -46,5 +61,5 @@ export default function Account() {
                 }
             </Menu>
         </>
-    )
+    );
 }
