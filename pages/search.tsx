@@ -72,6 +72,7 @@ export default function Search() {
     const classes = useStyles();
     const router = useRouter();
 
+
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
         <InputBase
             placeholder="Search…"
@@ -87,7 +88,6 @@ export default function Search() {
     );
     const CustomSearchBox = connectSearchBox(SearchBox);
 
-    console.log(router.query);
 
     return (
         <>
@@ -110,7 +110,7 @@ export default function Search() {
                                 indexName="pages"
                                 searchClient={searchClient}
                             >
-                                <CustomSearchBox />
+                                <CustomSearchBox defaultRefinement={router.query['q']} />
                             </InstantSearch>
                         </div>
                         <div className={classes.spacer}></div>

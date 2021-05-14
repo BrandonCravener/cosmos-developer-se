@@ -7,13 +7,23 @@ import IconButton from '@material-ui/core/IconButton';
 import Image from 'next/image';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
+import Link from 'next/link';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '../styles/Home.module.css';
+import { useRouter } from "next/router";
 import { useSession } from 'next-auth/client';
 
 export default function Home() {
+  const router = useRouter();
   const [session, loading] = useSession();
+  const [search, setSearch] = React.useState("");
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key == "Enter") {
+      router.push(`/search?q=${encodeURIComponent(search)}`);
+    }
+  };
 
   return (
     <>
@@ -43,19 +53,22 @@ export default function Home() {
               <InputLabel htmlFor="search-query">Search</InputLabel>
               <FilledInput
                 id="search-query"
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); }}
+                onKeyDown={handleSearchKeyDown}
                 endAdornment={
                   <InputAdornment position="end">
-                    <IconButton aria-label="Search for results">
-                      <SearchIcon />
-                    </IconButton>
+                    <Link href={`/search?q=${encodeURIComponent(search)}`}>
+                      <IconButton aria-label="Search for results">
+                        <SearchIcon />
+                      </IconButton>
+                    </Link>
                   </InputAdornment>
                 }
               />
             </FormControl>
           </Grid>
         </Grid>
-
-
       </main>
     </>
   );

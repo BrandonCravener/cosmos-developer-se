@@ -24,6 +24,7 @@ export default function Account() {
     const classes = useStyles();
     const [session, loading] = useSession();
     const [anchorEl, setAnchorEl] = React.useState(null);
+    
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
