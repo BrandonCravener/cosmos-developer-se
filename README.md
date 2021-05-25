@@ -1,6 +1,6 @@
 # Cosmos Developer SE
 
-Cosmos Developer SE is a custom search engine aimed at being curated towards developers.
+Cosmos Developer SE is a custom search engine aimed towards developers.
 
 ## Installation
 
@@ -16,7 +16,7 @@ npm run dev
 
 ## Usage
 
-This project requires a populated typesense database and a MongoDB database in order to function correctly. Neither will be available publically.
+This project requires a populated TypeSense database and a MongoDB database in order to function correctly. Neither will be available publically. I plan to move to MeiliSearch after the indexing performance improves.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

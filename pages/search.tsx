@@ -1,4 +1,4 @@
-import { InstantSearch, connectSearchBox } from 'react-instantsearch-dom';
+import { Hits, InstantSearch, connectSearchBox } from 'react-instantsearch-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 import Account from '../components/account/account';
@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Head from 'next/head';
 import Image from "next/image";
 import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,7 +25,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         ]
     },
     additionalSearchParameters: {
-        queryBy: "name,description,categories"
+        queryBy: "title,categories,tags,text"
     }
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -89,6 +90,14 @@ export default function Search() {
     const CustomSearchBox = connectSearchBox(SearchBox);
 
 
+    const Hit = ({ hit }) => {
+        return <Paper elevation={3}>
+            <a href={hit.url}>{hit.title}</a>
+            <p>{hit.text.split(" ").slice(0, (Math.floor(document.body.clientWidth / 50) >= 12) ? Math.floor(document.body.clientWidth / 50) : 12).join(" ") + "..."}</p>
+            {console.log(hit)}
+        </Paper>
+    }
+
     return (
         <>
             <Head>
@@ -98,24 +107,25 @@ export default function Search() {
 
             <main>
                 <Account />
-                <AppBar position="static">
-                    <Toolbar>
-                        <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24} ></Image>
-                        <div className={classes.spacer}></div>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InstantSearch
-                                indexName="pages"
-                                searchClient={searchClient}
-                            >
+                <InstantSearch
+                    indexName="pages"
+                    searchClient={searchClient}
+                >
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24} ></Image>
+                            <div className={classes.spacer}></div>
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
                                 <CustomSearchBox defaultRefinement={router.query['q']} />
-                            </InstantSearch>
-                        </div>
-                        <div className={classes.spacer}></div>
-                    </Toolbar>
-                </AppBar>
+                            </div>
+                            <div className={classes.spacer}></div>
+                        </Toolbar>
+                    </AppBar>
+                    <Hits hitComponent={Hit} />
+                </InstantSearch>
             </main>
         </>
     );
