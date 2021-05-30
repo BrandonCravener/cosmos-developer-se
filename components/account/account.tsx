@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         top: '4px',
         right: '4px',
-        position: 'absolute',
+        position: 'fixed',
         'z-index': 99,
         [theme.breakpoints.up('sm')]: {
             top: '8px',
@@ -24,7 +24,7 @@ export default function Account() {
     const classes = useStyles();
     const [session, loading] = useSession();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    
+
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

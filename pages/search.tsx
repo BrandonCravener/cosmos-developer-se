@@ -1,34 +1,25 @@
-import { Hits, InstantSearch, connectSearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 import Account from '../components/account/account';
 import AppBar from '@material-ui/core/AppBar';
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
 import Head from 'next/head';
 import Image from "next/image";
 import InputBase from '@material-ui/core/InputBase';
-import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-    server: {
-        apiKey: process.env.NEXT_PUBLIC_TYPESENSE_KEY,
-        nodes: [
-            {
-                host: process.env.NEXT_PUBLIC_TYPESENSE_HOST,
-                port: process.env.NEXT_PUBLIC_TYPESENSE_PORT,
-                protocol: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL
-            }
-        ]
-    },
-    additionalSearchParameters: {
-        queryBy: "title,categories,tags,text"
-    }
-});
-const searchClient = typesenseInstantsearchAdapter.searchClient;
+interface Props {
+    window?: () => Window;
+    children: React.ReactElement;
+}
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -66,13 +57,59 @@ const useStyles = makeStyles((theme) => ({
     },
     spacer: {
         'flex-grow': 1
+    },
+    truncate: {
+        display: '-webkit-box',
+        '-webkit-line-clamp': 2,
+        '-webkit-box-orient': 'vertical',
+        overflow: 'hidden'
+    },
+    result: {
+        padding: '0.4rem'
+    },
+    appBar: {
+        'z-index': 1
     }
 }));
 
-export default function Search() {
+function ElevationScroll(props: Props) {
+    const { children, window } = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({
+        disableHysteresis: true,
+        threshold: 0,
+        target: window ? window() : undefined,
+    });
+
+    return React.cloneElement(children, {
+        elevation: trigger ? 4 : 0,
+    });
+}
+
+
+const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
+    server: {
+        apiKey: process.env.NEXT_PUBLIC_TYPESENSE_KEY,
+        nodes: [
+            {
+                host: process.env.NEXT_PUBLIC_TYPESENSE_HOST,
+                port: process.env.NEXT_PUBLIC_TYPESENSE_PORT,
+                protocol: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL
+            }
+        ]
+    },
+    additionalSearchParameters: {
+        queryBy: "title,categories,tags,text"
+    }
+});
+const searchClient = typesenseInstantsearchAdapter.searchClient;
+
+
+export default function Search(props: Props) {
     const classes = useStyles();
     const router = useRouter();
-
 
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
         <InputBase
@@ -87,16 +124,28 @@ export default function Search() {
             disabled={isSearchStalled}
         />
     );
+    const Hits = ({ hits }) => (
+        <Grid container
+            justify="center"
+            direction="column"
+            alignItems="center"
+            spacing={1} xs={12}>
+            <Grid item xs={11} md={6} lg={4}></Grid>
+            {hits.map((hit) => (
+                <Grid item xs={11} md={6} lg={4}>
+                    <Card className={classes.result} variant="outlined">
+                        <Typography variant="h6" component="h6">
+                            <u><a href={hit.url}>{hit.title}</a></u>
+                        </Typography>
+                        <p className={classes.truncate}>{hit.text}</p>
+                        {console.log(hit)}
+                    </Card>
+                </Grid>
+            ))}
+        </Grid>
+    );
     const CustomSearchBox = connectSearchBox(SearchBox);
-
-
-    const Hit = ({ hit }) => {
-        return <Paper elevation={3}>
-            <a href={hit.url}>{hit.title}</a>
-            <p>{hit.text.split(" ").slice(0, (Math.floor(document.body.clientWidth / 50) >= 12) ? Math.floor(document.body.clientWidth / 50) : 12).join(" ") + "..."}</p>
-            {console.log(hit)}
-        </Paper>
-    }
+    const CustomHits = connectHits(Hits);
 
     return (
         <>
@@ -111,20 +160,23 @@ export default function Search() {
                     indexName="pages"
                     searchClient={searchClient}
                 >
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24} ></Image>
-                            <div className={classes.spacer}></div>
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon />
+                    <ElevationScroll {...props}>
+                        <AppBar className={classes.appBar} position="sticky">
+                            <Toolbar>
+                                <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24}></Image>
+                                <div className={classes.spacer}></div>
+                                <div className={classes.search}>
+                                    <div className={classes.searchIcon}>
+                                        <SearchIcon />
+                                    </div>
+                                    <CustomSearchBox defaultRefinement={router.query['q']} />
                                 </div>
-                                <CustomSearchBox defaultRefinement={router.query['q']} />
-                            </div>
-                            <div className={classes.spacer}></div>
-                        </Toolbar>
-                    </AppBar>
-                    <Hits hitComponent={Hit} />
+                                <div className={classes.spacer}></div>
+                            </Toolbar>
+                        </AppBar>
+                    </ElevationScroll>
+                    <CustomHits />
+                    {/* <Hits hitComponent={Hit} /> */}
                 </InstantSearch>
             </main>
         </>
