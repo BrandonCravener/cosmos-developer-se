@@ -74,13 +74,9 @@ const useStyles = makeStyles((theme) => ({
 
 function ElevationScroll(props: Props) {
     const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
     const trigger = useScrollTrigger({
         disableHysteresis: true,
-        threshold: 0,
-        target: window ? window() : undefined,
+        threshold: 0
     });
 
     return React.cloneElement(children, {
@@ -125,24 +121,25 @@ export default function Search(props: Props) {
         />
     );
     const Hits = ({ hits }) => (
-        <Grid container
+        <Grid container item
             justify="center"
             direction="column"
             alignItems="center"
             spacing={1} xs={12}>
             <Grid item xs={11} md={6} lg={4}></Grid>
             {hits.map((hit) => (
-                <Grid item xs={11} md={6} lg={4}>
-                    <Card className={classes.result} variant="outlined">
+                <Grid item key={hit.url} xs={11} md={6} lg={4}>
+                    < Card className={classes.result} variant="outlined" >
                         <Typography variant="h6" component="h6">
                             <u><a href={hit.url}>{hit.title}</a></u>
                         </Typography>
                         <p className={classes.truncate}>{hit.text}</p>
                         {console.log(hit)}
                     </Card>
-                </Grid>
-            ))}
-        </Grid>
+                </Grid >
+            ))
+            }
+        </Grid >
     );
     const CustomSearchBox = connectSearchBox(SearchBox);
     const CustomHits = connectHits(Hits);

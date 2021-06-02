@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DetailsIcon from '@material-ui/icons/Details';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -47,7 +48,8 @@ export default function Account() {
     return (
         <>
             <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
-                <AccountCircleIcon />
+                {session ? <DetailsIcon /> : <AccountCircleIcon />}
+
             </IconButton>
             <Menu
                 id="account-menu"
