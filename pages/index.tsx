@@ -20,10 +20,15 @@ export default function Home() {
   const [search, setSearch] = React.useState("");
 
   const handleSearchKeyDown = (e) => {
-    if (e.key == "Enter") {
+    if (e.key == "Enter" && search.trim().length > 0) {
       router.push(`/search?q=${encodeURIComponent(search)}`);
     }
   };
+  const handleSearch = (e) => {
+    if (search.trim().length > 0) {
+      router.push(`/search?q=${encodeURIComponent(search)}`);
+    }
+  }
 
   return (
     <>
@@ -38,6 +43,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        {console.log(session)}
+        {console.log(loading)}
         <Account />
         <Grid container
           className={styles.grid}
@@ -54,15 +61,15 @@ export default function Home() {
               <FilledInput
                 id="search-query"
                 value={search}
-                onChange={(e) => { setSearch(e.target.value); }}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
                 onKeyDown={handleSearchKeyDown}
                 endAdornment={
-                  <InputAdornment position="end">
-                    <Link href={`/search?q=${encodeURIComponent(search)}`}>
-                      <IconButton aria-label="Search for results">
-                        <SearchIcon />
-                      </IconButton>
-                    </Link>
+                  <InputAdornment position="end" onClick={handleSearch}>
+                    <IconButton aria-label="Search for results">
+                      <SearchIcon />
+                    </IconButton>
                   </InputAdornment>
                 }
               />

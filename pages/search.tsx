@@ -3,9 +3,11 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 
 import Account from '../components/account/account';
 import AppBar from '@material-ui/core/AppBar';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Head from 'next/head';
+import IconButton from '@material-ui/core/IconButton';
 import Image from "next/image";
 import InputBase from '@material-ui/core/InputBase';
 import React from 'react';
@@ -69,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         'z-index': 1
+    },
+    bookmarkButton: {
+        'float': 'right'
     }
 }));
 
@@ -83,7 +88,6 @@ function ElevationScroll(props: Props) {
         elevation: trigger ? 4 : 0,
     });
 }
-
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     server: {
@@ -101,7 +105,6 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     }
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
-
 
 export default function Search(props: Props) {
     const classes = useStyles();
@@ -129,11 +132,21 @@ export default function Search(props: Props) {
             <Grid item xs={11} md={6} lg={4}></Grid>
             {hits.map((hit) => (
                 <Grid item key={hit.url} xs={11} md={6} lg={4}>
-                    < Card className={classes.result} variant="outlined" >
+                    <Card className={classes.result} variant="outlined" >
+                        <Typography variant="caption">
+                            {hit.url}
+                        </Typography>
+                        <IconButton className={classes.bookmarkButton} aria-label="bookmark">
+                            <BookmarkBorderIcon />
+                        </IconButton>
                         <Typography variant="h6" component="h6">
                             <u><a href={hit.url}>{hit.title}</a></u>
                         </Typography>
                         <p className={classes.truncate}>{hit.text}</p>
+                        <Typography variant="caption">
+                            {hit.date}
+                        </Typography>
+
                         {console.log(hit)}
                     </Card>
                 </Grid >
@@ -173,7 +186,6 @@ export default function Search(props: Props) {
                         </AppBar>
                     </ElevationScroll>
                     <CustomHits />
-                    {/* <Hits hitComponent={Hit} /> */}
                 </InstantSearch>
             </main>
         </>
