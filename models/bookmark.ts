@@ -1,27 +1,21 @@
 import mongoose from 'mongoose';
 
-var Schema = mongoose.Schema;
-
-var bookmark = new Schema({
+const BookmarkSchema = new mongoose.Schema({
     url: {
         type: String,
-        required: true
+        required: [true, 'Bookmark URL Required']
     },
     title: {
         type: String,
-        required: true
+        required: [true, 'Bookmark Title Required']
     },
     description: {
         type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
+        required: [true, 'Bookmark Description Required']
     },
     userID: {
         type: String,
-        required: true
+        required: [true, 'Bookmark User ID Required']
     },
     dateAdded: {
         type: Date,
@@ -30,6 +24,4 @@ var bookmark = new Schema({
 });
 
 
-const Bookmark = mongoose.model('Bookmark', bookmark);
-
-export default Bookmark;
+export default mongoose.models.Bookmark || mongoose.model('Bookmark', BookmarkSchema);

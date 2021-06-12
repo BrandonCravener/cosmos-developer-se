@@ -1,26 +1,27 @@
 import { InstantSearch, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { getSession, useSession } from 'next-auth/client';
 
 import Account from '../components/account/account';
 import AppBar from '@material-ui/core/AppBar';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
+import Bookmark from '../models/Bookmark';
 import Head from 'next/head';
-import IconButton from '@material-ui/core/IconButton';
+import Hits from '../components/hits/hits';
 import Image from "next/image";
 import InputBase from '@material-ui/core/InputBase';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
-import Typography from '@material-ui/core/Typography';
+import dbConnect from '../middlewares/dbConnect';
+import styles from '../styles/search.module.css';
 import { useRouter } from 'next/router';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 interface Props {
     window?: () => Window;
     children: React.ReactElement;
+    bookmarks: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -47,33 +48,11 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    inputRoot: {
-        color: 'inherit',
-        width: '100%',
-    },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%'
-    },
-    spacer: {
-        'flex-grow': 1
-    },
-    truncate: {
-        display: '-webkit-box',
-        '-webkit-line-clamp': 2,
-        '-webkit-box-orient': 'vertical',
-        overflow: 'hidden'
-    },
-    result: {
-        padding: '0.4rem'
-    },
-    appBar: {
-        'z-index': 1
-    },
-    bookmarkButton: {
-        'float': 'right'
     }
 }));
 
@@ -83,7 +62,6 @@ function ElevationScroll(props: Props) {
         disableHysteresis: true,
         threshold: 0
     });
-
     return React.cloneElement(children, {
         elevation: trigger ? 4 : 0,
     });
@@ -106,15 +84,14 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
-export default function Search(props: Props) {
+function Search(props: Props) {
     const classes = useStyles();
     const router = useRouter();
-
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
         <InputBase
             placeholder="Search…"
             classes={{
-                root: classes.inputRoot,
+                root: styles.inputRoot,
                 input: classes.inputInput,
             }}
             inputProps={{ 'aria-label': 'search' }}
@@ -122,37 +99,6 @@ export default function Search(props: Props) {
             onChange={(e) => refine(e.currentTarget.value)}
             disabled={isSearchStalled}
         />
-    );
-    const Hits = ({ hits }) => (
-        <Grid container item
-            justify="center"
-            direction="column"
-            alignItems="center"
-            spacing={1} xs={12}>
-            <Grid item xs={11} md={6} lg={4}></Grid>
-            {hits.map((hit) => (
-                <Grid item key={hit.url} xs={11} md={6} lg={4}>
-                    <Card className={classes.result} variant="outlined" >
-                        <Typography variant="caption">
-                            {hit.url}
-                        </Typography>
-                        <IconButton className={classes.bookmarkButton} aria-label="bookmark">
-                            <BookmarkBorderIcon />
-                        </IconButton>
-                        <Typography variant="h6" component="h6">
-                            <u><a href={hit.url}>{hit.title}</a></u>
-                        </Typography>
-                        <p className={classes.truncate}>{hit.text}</p>
-                        <Typography variant="caption">
-                            {hit.date}
-                        </Typography>
-
-                        {console.log(hit)}
-                    </Card>
-                </Grid >
-            ))
-            }
-        </Grid >
     );
     const CustomSearchBox = connectSearchBox(SearchBox);
     const CustomHits = connectHits(Hits);
@@ -163,31 +109,48 @@ export default function Search(props: Props) {
                 <title>Cosmos</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <main>
                 <Account />
                 <InstantSearch
                     indexName="pages"
-                    searchClient={searchClient}
-                >
+                    searchClient={searchClient}>
                     <ElevationScroll {...props}>
-                        <AppBar className={classes.appBar} position="sticky">
+                        <AppBar className={styles.appBar} position="sticky">
                             <Toolbar>
                                 <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24}></Image>
-                                <div className={classes.spacer}></div>
+                                <div className={styles.spacer}></div>
                                 <div className={classes.search}>
                                     <div className={classes.searchIcon}>
                                         <SearchIcon />
                                     </div>
                                     <CustomSearchBox defaultRefinement={router.query['q']} />
                                 </div>
-                                <div className={classes.spacer}></div>
+                                <div className={styles.spacer}></div>
                             </Toolbar>
                         </AppBar>
                     </ElevationScroll>
+                    {console.log(props.bookmarks)}
                     <CustomHits />
                 </InstantSearch>
             </main>
         </>
     );
 }
+
+export async function getServerSideProps(ctx) {
+    const session = await getSession(ctx)
+
+    await dbConnect()
+
+    const result = await Bookmark.find({ userID: session.userId })
+    const bookmarks = result.map((doc) => {
+        const bookmark = doc.toObject()
+        bookmark._id = bookmark._id.toString()
+        bookmark.dateAdded = bookmark.dateAdded.toString()
+        return bookmark
+    })
+
+    return { props: { bookmarks: bookmarks } }
+}
+
+export default Search;
