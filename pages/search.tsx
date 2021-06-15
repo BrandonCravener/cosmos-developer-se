@@ -1,6 +1,5 @@
 import { InstantSearch, connectHits, connectSearchBox } from 'react-instantsearch-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { getSession, useSession } from 'next-auth/client';
 
 import Account from '../components/account/account';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import dbConnect from '../middlewares/dbConnect';
+import { getSession } from 'next-auth/client';
 import styles from '../styles/search.module.css';
 import { useRouter } from 'next/router';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
@@ -129,8 +129,8 @@ function Search(props: Props) {
                             </Toolbar>
                         </AppBar>
                     </ElevationScroll>
-                    {console.log(props.bookmarks)}
-                    <CustomHits />
+                    {/* {console.log(props.bookmarks)} */}
+                    <CustomHits bookmarks={props.bookmarks} />
                 </InstantSearch>
             </main>
         </>
@@ -140,17 +140,20 @@ function Search(props: Props) {
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
 
-    await dbConnect()
+    if (session) {
+        await dbConnect()
 
-    const result = await Bookmark.find({ userID: session.userId })
-    const bookmarks = result.map((doc) => {
-        const bookmark = doc.toObject()
-        bookmark._id = bookmark._id.toString()
-        bookmark.dateAdded = bookmark.dateAdded.toString()
-        return bookmark
-    })
+        const result = await Bookmark.find({ userID: session.userId })
+        const bookmarks = result.map((doc) => {
+            const bookmark = doc.toObject()
+            bookmark._id = bookmark._id.toString()
+            bookmark.dateAdded = bookmark.dateAdded.toString()
+            return bookmark
+        })
 
-    return { props: { bookmarks: bookmarks } }
+        return { props: { bookmarks: bookmarks } }
+    }
+    return { props: { bookmarks: {} } }
 }
 
 export default Search;
