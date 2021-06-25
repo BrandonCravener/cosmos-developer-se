@@ -1,12 +1,9 @@
-.truncate {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.linksPadding{
+    padding-left: 10px !important;
 }
-.result {
-    padding: 0.4rem;
+.hitContent {
+    padding: 0.75rem !important;
 }
 .bookmarkButton {
-    float: right;
+    padding: 0.5rem !important;
 }

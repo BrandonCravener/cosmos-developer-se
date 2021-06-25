@@ -47,7 +47,7 @@ export default function Account() {
 
     return (
         <>
-            <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
+            {/* <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
                 {session ? <DetailsIcon /> : <AccountCircleIcon />}
 
             </IconButton>
@@ -62,7 +62,7 @@ export default function Account() {
                     <MenuItem onClick={logout}>Logout</MenuItem> :
                     <MenuItem onClick={login}>Login</MenuItem>
                 }
-            </Menu>
+            </Menu> */}
         </>
     );
 }
