@@ -1,19 +1,33 @@
-import Grid, { GridSpacing } from '@material-ui/core/Grid';
-import { signIn, signOut, useSession } from 'next-auth/client'
-
+import Account from '../components/account/account';
 import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
-import Head from 'next/head'
+import Grid from '@material-ui/core/Grid';
+import Head from 'next/head';
 import IconButton from '@material-ui/core/IconButton';
-import Image from 'next/image'
+import Image from 'next/image';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
+import { useRouter } from "next/router";
+import { useSession } from 'next-auth/client';
 
 export default function Home() {
-  const [session, loading] = useSession()
+  const router = useRouter();
+  const [session, loading] = useSession();
+  const [search, setSearch] = React.useState("");
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key == "Enter" && search.trim().length > 0) {
+      router.push(`/search?q=${encodeURIComponent(search)}`);
+    }
+  };
+  const handleSearch = (e) => {
+    if (search.trim().length > 0) {
+      router.push(`/search?q=${encodeURIComponent(search)}`);
+    }
+  }
 
   return (
     <>
@@ -28,6 +42,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <Account />
         <Grid container
           className={styles.grid}
           justify="center"
@@ -42,8 +57,13 @@ export default function Home() {
               <InputLabel htmlFor="search-query">Search</InputLabel>
               <FilledInput
                 id="search-query"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                onKeyDown={handleSearchKeyDown}
                 endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment position="end" onClick={handleSearch}>
                     <IconButton aria-label="Search for results">
                       <SearchIcon />
                     </IconButton>
@@ -53,9 +73,7 @@ export default function Home() {
             </FormControl>
           </Grid>
         </Grid>
-
-
       </main>
     </>
-  )
+  );
 }

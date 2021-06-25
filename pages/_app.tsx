@@ -1,26 +1,33 @@
-import '../styles/globals.css'
-import '@fontsource/roboto'
+import '../styles/globals.css';
+import '@fontsource/roboto';
 
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import { AppProps } from 'next/dist/next-server/lib/router/router'
+import { AppProps } from 'next/dist/next-server/lib/router/router';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from "../components/layout"
-import { Provider } from 'next-auth/client'
+import Layout from "../components/layout/layout";
+import { Provider } from 'next-auth/client';
 import React from 'react';
+import purple from '@material-ui/core/colors/purple';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = React.useMemo(
-    () =>
-      createMuiTheme({
-        palette: {
-          type: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode],
-  );
+
+
+  const theme = createMuiTheme({
+    palette: {
+      type: prefersDarkMode ? 'dark' : 'light'
+    },
+  });
+
+  React.useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
 
   return (
     <Layout>
@@ -31,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </ThemeProvider>
       </Provider>
     </Layout>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
