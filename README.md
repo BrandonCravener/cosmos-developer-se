@@ -16,7 +16,7 @@ npm run dev
 
 ## Usage
 
-This project requires a populated TypeSense database and a MongoDB database in order to function correctly. Neither will be available publically. I plan to move to MeiliSearch after the indexing performance improves.
+This project requires a setup Google Custom Search Engine populated with your desired sites.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

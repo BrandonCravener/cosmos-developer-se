@@ -17,13 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const theme = createMuiTheme({
     palette: {
-      type: prefersDarkMode ? 'dark' : 'light',
-      primary: {
-        main: purple[500],
-      },
-      secondary: {
-        main: '#f44336',
-      },
+      type: prefersDarkMode ? 'dark' : 'light'
     },
   });
 

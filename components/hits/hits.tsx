@@ -1,14 +1,16 @@
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { getSession, useSession } from 'next-auth/client';
 
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import styles from './hits.module.css'
+import { useSession } from 'next-auth/client';
 import { useState } from 'react';
 
 function Alert(props: AlertProps) {
@@ -20,14 +22,9 @@ function Hits({ hits, bookmarks }) {
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
 
-    let bookmarksShort = [];
-    if (session) {
-        bookmarks.map((bookmark) => {
-            bookmarksShort.push(bookmark.url)
-        });
-    }
-
     const addBookmark = async (hit) => {
+        delete hit.thumbnail;
+
         try {
             const res = await fetch('/api/bookmark', {
                 method: 'POST',
@@ -35,21 +32,19 @@ function Hits({ hits, bookmarks }) {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    url: hit.url,
-                    title: hit.title,
-                    description: hit.description
-                }),
+                body: JSON.stringify(hit),
             })
             if (!res.ok) {
                 throw new Error(String(res.status))
             }
         } catch (error) {
-            setErrorMessage(error)
+            setErrorMessage(error);
+            setErrorOpen(true);
         }
     }
-    const removeBookmark = async (hit) => {
-        let bookmark = bookmarks.find(bookmark => bookmark.url == hit.url);
+    const removeBookmark = async (url) => {
+        const bookmark = bookmarks.find(bookmark => bookmark.url == url);
+        bookmarks.splice(bookmarks.findIndex(bookmark => bookmark.url == url), 1);
         if (bookmark) {
             try {
                 const res = await fetch(`/api/bookmark/${bookmark._id}`, {
@@ -62,16 +57,18 @@ function Hits({ hits, bookmarks }) {
                 if (!res.ok) {
                     throw new Error(String(res.status))
                 } else {
-                    console.log(hit)
-                    console.log(bookmarksShort)
-                    bookmarksShort.splice(bookmarksShort.indexOf(hit.url), 1);
-                    console.log(bookmarksShort)
+
                 }
             } catch (error) {
-                setErrorMessage(error)
+                setErrorMessage(error);
+                setErrorOpen(true);
             }
+        } else {
+            setErrorMessage("Bookmark not found!");
+            setErrorOpen(true);
         }
     }
+
     const handleSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -86,41 +83,47 @@ function Hits({ hits, bookmarks }) {
                     {errorMessage}
                 </Alert>
             </Snackbar>
-            <Grid container item
-                justify="center"
+            <Grid container
+                item
+                spacing={1}
                 direction="column"
-                alignItems="center"
-                spacing={1} xs={12} >
+                justify="center"
+                alignItems="flex-start"
+                xs={12}
+                className={styles.linksPadding}>
                 <Grid item xs={11} md={6} lg={4}></Grid>
                 {
-                    hits.map((hit) => (
-                        <Grid item key={hit.url} xs={11} md={6} lg={4}>
-                            <Card className={styles.result} variant="outlined" >
-                                <Typography variant="caption">
-                                    {hit.url}
-                                </Typography>
-                                {
-                                    session != null && (bookmarksShort.indexOf(hit.url) !== -1 ?
-                                        <IconButton className={styles.bookmarkButton} aria-label="bookmark" onClick={() => removeBookmark(hit)}>
-                                            <BookmarkIcon />
-                                        </IconButton>
-                                        :
-                                        <IconButton className={styles.bookmarkButton} aria-label="bookmark" onClick={() => addBookmark(hit)}>
-                                            <BookmarkBorderIcon />
-                                        </IconButton>)
-                                }
-                                <Typography variant="h6" component="h6">
-                                    <u><a href={hit.url}>{hit.title}</a></u>
-                                </Typography>
-                                <p className={styles.truncate}>{hit.text}</p>
-                                <Typography variant="caption">
-                                    {hit.date}
-                                </Typography>
+                    hits.map((result) =>
+                        <Grid item key={result.url} xs={12} md={10} lg={8} zeroMinWidth>
+                            <Card variant="outlined">
+                                <CardContent className={styles.hitContent}>
+                                    <Typography variant="h6" component="h6">
+                                        <Link href={result.url}>
+                                            {result.title}
+                                        </Link>
+                                        {/* {
+                                            session && (bookmarks.findIndex(bookmark => bookmark.url == result.url) !== -1 ?
+                                                <IconButton className={styles.bookmarkButton} aria-label="bookmark" onClick={() => removeBookmark(result.url)}>
+                                                    <BookmarkIcon />
+                                                </IconButton>
+                                                :
+                                                <IconButton className={styles.bookmarkButton} aria-label="bookmark" onClick={() => addBookmark(result)}>
+                                                    <BookmarkBorderIcon />
+                                                </IconButton>)
+                                        } */}
+                                    </Typography>
+                                    <Typography color="textSecondary" gutterBottom>
+                                        {result.url}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {result.description}
+                                    </Typography>
+                                </CardContent>
                             </Card>
-                        </Grid >
-                    ))
+                        </Grid>
+                    )
                 }
-            </Grid >
+            </Grid>
         </>
     );
 }

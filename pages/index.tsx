@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Image from 'next/image';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-import Link from 'next/link';
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '../styles/Home.module.css';
@@ -43,8 +42,6 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {console.log(session)}
-        {console.log(loading)}
         <Account />
         <Grid container
           className={styles.grid}
