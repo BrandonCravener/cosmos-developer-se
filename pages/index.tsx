@@ -1,17 +1,19 @@
-import Account from '../components/account/account';
-import FilledInput from '@material-ui/core/FilledInput';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import Head from 'next/head';
 import IconButton from '@material-ui/core/IconButton';
-import Image from 'next/image';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-import React from 'react';
+import NoSsr from '@material-ui/core/NoSsr';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import SearchIcon from '@material-ui/icons/Search';
-import styles from '../styles/Home.module.css';
-import { useRouter } from "next/router";
 import { useSession } from 'next-auth/client';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import Account from '../components/account/account';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const router = useRouter();
@@ -49,28 +51,32 @@ export default function Home() {
           alignItems="center"
           spacing={4}>
           <Grid item>
-            <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72} ></Image>
+            <Image priority className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72}></Image>
           </Grid>
           <Grid item xs={12} />
           <Grid item xs={11} md={6} lg={4}>
-            <FormControl variant="filled" size="medium" fullWidth>
-              <InputLabel htmlFor="search-query">Search</InputLabel>
-              <FilledInput
-                id="search-query"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-                onKeyDown={handleSearchKeyDown}
-                endAdornment={
-                  <InputAdornment position="end" onClick={handleSearch}>
-                    <IconButton aria-label="Search for results">
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+            <NoSsr>
+              <FormControl variant="outlined" size="medium" fullWidth>
+                <InputLabel htmlFor="search-query">Search</InputLabel>
+                <OutlinedInput
+                  id="search-query"
+                  label="Search"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                  onKeyDown={handleSearchKeyDown}
+                  endAdornment={
+                    <InputAdornment position="end" onClick={handleSearch}>
+                      <IconButton aria-label="Search for results">
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  fullWidth
+                />
+              </FormControl>
+            </NoSsr>
           </Grid>
         </Grid>
       </main>

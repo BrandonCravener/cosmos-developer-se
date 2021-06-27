@@ -2,6 +2,10 @@
     "name": "cosmos-dev-se",
     "version": "0.1.0",
     "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BrandonCravener/cosmos-developer-se"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
@@ -14,12 +18,14 @@
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.58",
         "axios": "^0.21.1",
+        "babel-plugin-import": "^1.13.3",
         "mongodb": "^3.6.9",
         "mongoose": "^5.12.14",
         "next": "^10.2.0",
         "next-auth": "^3.26.1",
         "react": "17.0.2",
         "react-dom": "17.0.2",
+        "react-html-parser": "^2.0.2",
         "react-instantsearch-dom": "^6.11.1",
         "three": "^0.128.0",
         "typesense": "^0.12.1",
@@ -30,6 +36,7 @@
         "@ijsto/eslint-config": "^4.1.6",
         "@types/node": "^15.12.2",
         "@types/react": "^17.0.11",
+        "babel-plugin-styled-components": "^1.12.0",
         "eslint": "^7.28.0",
         "typescript": "^4.2.4"
     }

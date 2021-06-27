@@ -1,23 +1,25 @@
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Layout from '../components/layout/layout';
+import lightBlue from '@material-ui/core/colors/lightBlue';
+import React from 'react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { AppProps } from 'next/dist/next-server/lib/router/router';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Provider } from 'next-auth/client';
 import '../styles/globals.css';
 import '@fontsource/roboto';
 
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
-import { AppProps } from 'next/dist/next-server/lib/router/router';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from "../components/layout/layout";
-import { Provider } from 'next-auth/client';
-import React from 'react';
-import purple from '@material-ui/core/colors/purple';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-
   const theme = createMuiTheme({
     palette: {
-      type: prefersDarkMode ? 'dark' : 'light'
+      type: prefersDarkMode ? 'dark' : 'light',
+      primary: {
+        main: '#FF6F00',
+      },
+      secondary: lightBlue,
     },
   });
 

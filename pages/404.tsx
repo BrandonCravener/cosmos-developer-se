@@ -26,7 +26,7 @@ export default function Custom404() {
                     alignItems="center"
                     spacing={4}>
                     <Grid item>
-                        <Image className="logo" src="/images/404.svg" alt="404 Not Found" width={720} height={162} ></Image>
+                        <Image priority className="logo" src="/images/404.svg" alt="404 Not Found" width={720} height={162} ></Image>
                     </Grid>
                     <Grid item>
                         <Link href="/">
