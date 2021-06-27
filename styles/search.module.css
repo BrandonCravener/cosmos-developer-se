@@ -1,10 +1,11 @@
-.inputRoot {
+/* .inputRoot {
     color: inherit;
     width: 100%;
-}
-.spacer {
-    flex-grow: 1;
-}
+} */
 .appBar {
     z-index: 1 !important;
+}
+.linkLogo {
+    position: absolute;
+    left: 1rem;
 }

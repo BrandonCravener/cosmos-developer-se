@@ -1,15 +1,14 @@
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import Snackbar from '@material-ui/core/Snackbar';
+import Grow from '@material-ui/core/Grow';
 import Typography from '@material-ui/core/Typography';
 import styles from './hits.module.css'
+import ReactHtmlParser from 'react-html-parser';
 import { useSession } from 'next-auth/client';
 import { useState } from 'react';
 
@@ -83,23 +82,26 @@ function Hits({ hits, bookmarks }) {
                     {errorMessage}
                 </Alert>
             </Snackbar>
-            <Grid container
+            <Grid
+                container
                 item
-                spacing={1}
                 direction="column"
                 justify="center"
-                alignItems="flex-start"
-                xs={12}
-                className={styles.linksPadding}>
-                <Grid item xs={11} md={6} lg={4}></Grid>
+                alignItems="center"
+                className={styles.parentResultGrid}
+                spacing={2}
+                xs={12}>
+                <Grid item xs={12} md={9} lg={6}></Grid>
                 {
-                    hits.map((result) =>
-                        <Grid item key={result.url} xs={12} md={10} lg={8} zeroMinWidth>
-                            <Card variant="outlined">
-                                <CardContent className={styles.hitContent}>
-                                    <Typography variant="h6" component="h6">
+                    hits.map((result, index) =>
+                        <Grow key={result.url} in timeout={250 * (index + 1)}>
+                            <Grid item className={styles.resultGrid} xs={12} md={9} lg={6}>
+                                <Card variant="outlined" className={styles.hitCard}>
+                                    <CardContent className={styles.hitContent}>
                                         <Link href={result.url}>
-                                            {result.title}
+                                            <Typography variant="h6" component="h6" color="secondary">
+                                                {result.title}
+                                            </Typography>
                                         </Link>
                                         {/* {
                                             session && (bookmarks.findIndex(bookmark => bookmark.url == result.url) !== -1 ?
@@ -111,16 +113,16 @@ function Hits({ hits, bookmarks }) {
                                                     <BookmarkBorderIcon />
                                                 </IconButton>)
                                         } */}
-                                    </Typography>
-                                    <Typography color="textSecondary" gutterBottom>
-                                        {result.url}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {result.description}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                                        <Typography color="textSecondary" gutterBottom>
+                                            {result.url}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {ReactHtmlParser(result.description)}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grow>
                     )
                 }
             </Grid>
