@@ -1,8 +1,10 @@
+import Collapse from '@material-ui/core/Collapse';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import NoSsr from '@material-ui/core/NoSsr';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import SearchIcon from '@material-ui/icons/Search';
@@ -19,14 +21,17 @@ export default function Home() {
   const router = useRouter();
   const [session, loading] = useSession();
   const [search, setSearch] = React.useState("");
+  const [searchLoading, setSearchLoading] = React.useState(false);
 
   const handleSearchKeyDown = (e) => {
     if (e.key == "Enter" && search.trim().length > 0) {
+      setSearchLoading(true);
       router.push(`/search?q=${encodeURIComponent(search)}`);
     }
   };
   const handleSearch = (e) => {
     if (search.trim().length > 0) {
+      setSearchLoading(true);
       router.push(`/search?q=${encodeURIComponent(search)}`);
     }
   }
@@ -73,10 +78,15 @@ export default function Home() {
                       </IconButton>
                     </InputAdornment>
                   }
+                  disabled={searchLoading}
                   fullWidth
                 />
               </FormControl>
             </NoSsr>
+            <br />
+            <Collapse in={searchLoading}>
+              <LinearProgress />
+            </Collapse>
           </Grid>
         </Grid>
       </main>
