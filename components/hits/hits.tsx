@@ -86,7 +86,7 @@ function Hits({ hits, bookmarks }) {
                 container
                 item
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
                 className={styles.parentResultGrid}
                 spacing={2}

@@ -22,7 +22,7 @@ export default function Custom404() {
                 <Grid container
                     className={styles.grid}
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center"
                     spacing={4}>
                     <Grid item>

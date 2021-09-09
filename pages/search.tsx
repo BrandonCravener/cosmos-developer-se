@@ -189,7 +189,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                                 <Grid
                                     container
                                     direction="row"
-                                    justify="center"
+                                    justifyContent="center"
                                     alignItems="center"
                                     spacing={2}
                                 >
@@ -254,7 +254,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                         <Grid container
                             item
                             direction="column"
-                            justify="center"
+                            justifyContent="center"
                             alignItems="center"
                             xs={12}>
                             <Pagination count={10} shape="rounded" page={this.state.page} onChange={this.pageChange} />

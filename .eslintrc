@@ -1,9 +1,21 @@
 {
-    "extends": "@ijsto",
+    "extends": [
+        "@ijsto",
+        "prettier"
+    ],
+    "plugins": [
+        "prettier"
+    ],
     "rules": {
         "semi": [
             2,
             "always"
+        ],
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
         ]
     }
 }

@@ -3,8 +3,8 @@ import Layout from '../components/layout/layout';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AppProps } from 'next/dist/next-server/lib/router/router';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { AppProps } from 'next/dist/shared/lib/router/router';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Provider } from 'next-auth/client';
 import '../styles/globals.css';
 import '@fontsource/roboto';
@@ -13,7 +13,7 @@ import '@fontsource/roboto';
 function MyApp({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       type: prefersDarkMode ? 'dark' : 'light',
       primary: {

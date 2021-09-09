@@ -52,7 +52,7 @@ export default function Home() {
         <Account />
         <Grid container
           className={styles.grid}
-          justify="center"
+          justifyContent="center"
           alignItems="center"
           spacing={4}>
           <Grid item>
