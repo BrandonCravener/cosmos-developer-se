@@ -1,12 +1,7 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DetailsIcon from '@material-ui/icons/Details';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
     icon: {

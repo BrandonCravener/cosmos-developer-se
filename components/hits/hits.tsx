@@ -1,16 +1,16 @@
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import Snackbar from '@material-ui/core/Snackbar';
-import Grow from '@material-ui/core/Grow';
-import Typography from '@material-ui/core/Typography';
-import styles from './hits.module.css'
-import ReactHtmlParser from 'react-html-parser';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import Link from '@mui/material/Link';
+import Snackbar from '@mui/material/Snackbar';
+import Typography from '@mui/material/Typography';
 import { useSession } from 'next-auth/client';
 import { useState } from 'react';
+import ReactHtmlParser from 'react-html-parser';
+
+import styles from './hits.module.css';
 
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;

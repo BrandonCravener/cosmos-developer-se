@@ -1,9 +1,9 @@
-import Grid, { GridSpacing } from '@material-ui/core/Grid';
-
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import styles from '../styles/Home.module.css';
 
 export default function Custom404() {

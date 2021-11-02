@@ -1,27 +1,47 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from '../components/layout/layout';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AppProps } from 'next/dist/shared/lib/router/router';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Provider } from 'next-auth/client';
 import '../styles/globals.css';
 import '@fontsource/roboto';
+
+import { useMediaQuery } from '@mui/material';
+import { lightBlue } from '@mui/material/colors';
+import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
+import { Provider } from 'next-auth/client';
+import { AppProps } from 'next/dist/shared/lib/router/router';
+import React from 'react';
+
+import Layout from '../components/layout/layout';
+
+
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     palette: {
-      type: prefersDarkMode ? 'dark' : 'light',
       primary: {
         main: '#FF6F00',
       },
-      secondary: lightBlue,
+      secondary: {
+        main: lightBlue[500]
+      }
     },
-  });
+  }));
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -34,10 +54,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Provider session={pageProps.session}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Provider>
     </Layout>
   );
