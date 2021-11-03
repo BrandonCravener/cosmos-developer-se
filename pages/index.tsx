@@ -1,3 +1,4 @@
+import SearchIcon from '@mui/icons-material/Search';
 import Collapse from '@mui/material/Collapse';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
@@ -7,7 +8,6 @@ import InputLabel from '@mui/material/InputLabel';
 import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import SearchIcon from '@mui/icons-material/Search';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';

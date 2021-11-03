@@ -12,6 +12,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 import styles from './hits.module.css';
 
+
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -84,22 +85,19 @@ function Hits({ hits, bookmarks }) {
             </Snackbar>
             <Grid
                 container
-                item
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
-                className={styles.parentResultGrid}
-                spacing={2}
-                xs={12}>
-                <Grid item xs={12} md={9} lg={6}></Grid>
+                rowSpacing={2}>
+                <Grid item xs={11} md={9} lg={6}></Grid>
                 {
                     hits.map((result, index) =>
                         <Grow key={result.url} in timeout={250 * (index + 1)}>
-                            <Grid item className={styles.resultGrid} xs={12} md={9} lg={6}>
-                                <Card variant="outlined" className={styles.hitCard}>
+                            <Grid item xs={11} md={9} lg={6}>
+                                <Card variant="outlined">
                                     <CardContent className={styles.hitContent}>
                                         <Link href={result.url}>
-                                            <Typography variant="h6" component="h6" color="secondary">
+                                            <Typography variant="h6" component="h6">
                                                 {result.title}
                                             </Typography>
                                         </Link>

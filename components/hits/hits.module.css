@@ -4,12 +4,3 @@
 .bookmarkButton {
     padding: 0.5rem !important;
 }
-.resultGrid {
-    width: 100%;
-}
-.hitCard {
-    border-radius: 0.6rem !important;
-}
-.parentResultGrid {
-    margin: 0 !important;
-}

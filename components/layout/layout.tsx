@@ -20,7 +20,7 @@ export default function Layout({ children }) {
                 minWidth: 200.00,
                 maxDistance: 10,
                 backgroundAlpha: 0,
-                color: 0xFF6F00,
+                color: 0xffc107,
                 scale: 1.00,
                 scaleMobile: 1.00,
                 spacing: 20,

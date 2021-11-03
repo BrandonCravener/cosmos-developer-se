@@ -1,20 +1,23 @@
-import AppBar from '@material-ui/core/AppBar';
-import Collapse from '@material-ui/core/Collapse';
-import Fade from '@material-ui/core/Fade';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid/Grid';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
-import NoSsr from '@material-ui/core/NoSsr';
-import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
-import Toolbar from '@material-ui/core/Toolbar';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import SearchIcon from '@material-ui/icons/Search';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import Pagination from '@material-ui/lab/Pagination';
+import SearchIcon from '@mui/icons-material/Search';
+import {
+    Alert,
+    AlertTitle,
+    AppBar,
+    Collapse,
+    Fade,
+    FormControl,
+    Grid,
+    Hidden,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    LinearProgress,
+    NoSsr,
+    OutlinedInput,
+    Pagination,
+    Toolbar,
+    useScrollTrigger,
+} from '@mui/material';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -191,19 +194,18 @@ class Search extends React.Component<SearchProps, SearchState> {
                                     direction="row"
                                     justifyContent="center"
                                     alignItems="center"
-                                    spacing={2}
                                 >
                                     <Link href="/">
                                         <a className={styles.linkLogo}>
-                                            <Hidden smDown>
-                                                <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={107} height={24}></Image>
+                                            <Hidden mdDown>
+                                                <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={160.5} height={36}></Image>
                                             </Hidden>
                                             <Hidden mdUp>
-                                                <Image className="logo" src="/images/NewSmallLogo.svg" alt="Cosmos Logo" width={24} height={24}></Image>
+                                                <Image className="logo" src="/images/NewSmallLogo.svg" alt="Cosmos Logo" width={36} height={36}></Image>
                                             </Hidden>
                                         </a>
                                     </Link>
-                                    <Grid item xs={10} md={9} lg={6}>
+                                    <Grid item xs={10} md={7} lg={6}>
                                         <NoSsr>
                                             <FormControl variant="outlined" size="small" margin="dense" fullWidth>
                                                 <InputLabel htmlFor="search-bar">Search</InputLabel>
