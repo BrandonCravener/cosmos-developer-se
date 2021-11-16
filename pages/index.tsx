@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Typography from '@mui/material/Typography';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -53,11 +54,15 @@ export default function Home() {
         className={styles.grid}
         justifyContent="center"
         alignItems="center"
-        spacing={4}>
+        spacing={2}>
         <Grid item>
           <Image priority className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72}></Image>
         </Grid>
-        <Grid item xs={12} />
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" component="div" align="center">
+            <i>Search engine tailored to developers and realted content.</i>
+          </Typography>
+        </Grid>
         <Grid item xs={11} md={6} lg={4}>
           <NoSsr>
             <FormControl variant="outlined" size="medium" fullWidth>

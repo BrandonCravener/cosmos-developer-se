@@ -85,15 +85,15 @@ function Hits({ hits, bookmarks }) {
             </Snackbar>
             <Grid
                 container
-                direction="column"
                 justifyContent="center"
                 alignItems="center"
-                rowSpacing={2}>
+                rowSpacing={2}
+                className={styles.results}>
                 <Grid item xs={11} md={9} lg={6}></Grid>
                 {
                     hits.map((result, index) =>
                         <Grow key={result.url} in timeout={250 * (index + 1)}>
-                            <Grid item xs={11} md={9} lg={6}>
+                            <Grid item xs={11} md={9} lg={6} zeroMinWidth className={styles.result}>
                                 <Card variant="outlined">
                                     <CardContent className={styles.hitContent}>
                                         <Link href={result.url}>

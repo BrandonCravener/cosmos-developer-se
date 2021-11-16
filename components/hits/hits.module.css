@@ -4,3 +4,9 @@
 .bookmarkButton {
     padding: 0.5rem !important;
 }
+.results {
+    flex-direction: column;
+}
+.result {
+    width: 100%;
+}
