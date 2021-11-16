@@ -36,3 +36,4 @@ yarn-error.log*
 *.bat
 .env
 .env
+.vscode/settings.json

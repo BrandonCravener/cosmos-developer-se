@@ -1,53 +1,43 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signIn, signOut, useSession } from "next-auth/client";
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DetailsIcon from '@material-ui/icons/Details';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles((theme) => ({
-    icon: {
-        top: '4px',
-        right: '4px',
-        position: 'fixed',
-        'z-index': 99,
-        [theme.breakpoints.up('sm')]: {
-            top: '8px',
-            right: '8px',
-        },
-    }
+  icon: {
+    top: "4px",
+    right: "4px",
+    position: "fixed",
+    "z-index": 99,
+  },
 }));
 
 export default function Account() {
-    const classes = useStyles();
-    const [session, loading] = useSession();
-    const [anchorEl, setAnchorEl] = React.useState(null);
+  const classes = useStyles();
+  const [session, loading] = useSession();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const login = () => {
+    signIn();
+    setAnchorEl(null);
+  };
 
-    const login = () => {
-        signIn();
-        setAnchorEl(null);
-    };
+  const logout = () => {
+    signOut();
+    setAnchorEl(null);
+  };
 
-    const logout = () => {
-        signOut();
-        setAnchorEl(null);
-    };
-
-    return (
-        <>
-            {/* <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
+  return (
+    <>
+      {/* <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
                 {session ? <DetailsIcon /> : <AccountCircleIcon />}
 
             </IconButton>
@@ -63,6 +53,6 @@ export default function Account() {
                     <MenuItem onClick={login}>Login</MenuItem>
                 }
             </Menu> */}
-        </>
-    );
+    </>
+  );
 }

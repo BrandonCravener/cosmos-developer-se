@@ -1,31 +1,34 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Layout from '../components/layout/layout';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AppProps } from 'next/dist/shared/lib/router/router';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Provider } from 'next-auth/client';
-import '../styles/globals.css';
-import '@fontsource/roboto';
+import "../styles/globals.css";
+import "@fontsource/roboto";
 
+import { amber, grey } from "@mui/material/colors";
+import CssBaseline from "@mui/material/CssBaseline";
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+} from "@mui/material/styles";
+import { Provider } from "next-auth/client";
+import React from "react";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+import Layout from "../components/layout/layout";
 
+function MyApp({ Component, pageProps }) {
   const theme = createTheme({
     palette: {
-      type: prefersDarkMode ? 'dark' : 'light',
+      mode: "dark",
       primary: {
-        main: '#FF6F00',
+        main: amber[500],
       },
-      secondary: lightBlue,
+      secondary: {
+        main: grey[700],
+      },
     },
   });
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
+    const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
@@ -34,10 +37,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Provider session={pageProps.session}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Provider>
     </Layout>
   );
