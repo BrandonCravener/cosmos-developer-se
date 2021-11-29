@@ -1,20 +1,23 @@
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from 'next-auth/client';
 
-import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import React from 'react';
+import makeStyles from '@mui/styles/makeStyles';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   icon: {
-    top: "4px",
-    right: "4px",
-    position: "fixed",
-    "z-index": 99,
+    top: '4px',
+    right: '4px',
+    position: 'fixed',
+    'z-index': 99,
   },
 }));
 
-export default function Account() {
+const Account = function () {
   const classes = useStyles();
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -37,22 +40,16 @@ export default function Account() {
 
   return (
     <>
-      {/* <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
-                {session ? <DetailsIcon /> : <AccountCircleIcon />}
-
-            </IconButton>
-            <Menu
-                id="account-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-            >
-                {session ?
-                    <MenuItem onClick={logout}>Logout</MenuItem> :
-                    <MenuItem onClick={login}>Login</MenuItem>
-                }
-            </Menu> */}
+      <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
+        {session ? <ArrowDropDownIcon /> : <ManageAccountsIcon />}
+      </IconButton>
+      <Menu id="account-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        {session
+          ? <MenuItem onClick={logout}>Logout</MenuItem>
+          : <MenuItem onClick={login}>Login</MenuItem>}
+      </Menu>
     </>
   );
-}
+};
+
+export default Account;

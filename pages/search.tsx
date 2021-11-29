@@ -206,47 +206,22 @@ class Search extends React.Component<SearchProps, SearchState> {
           <ElevationScroll {...this.props}>
             <AppBar className={styles.appBar} position="sticky">
               <Toolbar>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+                <Grid container direction="row" justifyContent="center" alignItems="center">
                   <Link href="/">
                     <a className={styles.linkLogo}>
                       <Hidden mdDown>
-                        <Image
-                          className="logo"
-                          src="/images/Logo.svg"
-                          alt="Cosmos Logo"
-                          width={160.5}
-                          height={36}
-                        />
+                        <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={160.5} height={36}/>
                       </Hidden>
                       <Hidden mdUp>
-                        <Image
-                          className="logo"
-                          src="/images/NewSmallLogo.svg"
-                          alt="Cosmos Logo"
-                          width={36}
-                          height={36}
-                        />
+                        <Image className="logo" src="/images/NewSmallLogo.svg" alt="Cosmos Logo" width={36} height={36}/>
                       </Hidden>
                     </a>
                   </Link>
                   <Grid item xs={10} md={7} lg={6}>
                     <NoSsr>
-                      <FormControl
-                        variant="outlined"
-                        size="small"
-                        margin="dense"
-                        fullWidth
-                      >
+                      <FormControl variant="outlined" size="small" margin="dense" fullWidth>
                         <InputLabel htmlFor="search-bar">Search</InputLabel>
-                        <OutlinedInput
-                          id="search-bar"
-                          label="Search"
-                          value={this.state.search}
+                        <OutlinedInput id="search-bar" label="Search" value={this.state.search}
                           onChange={(e) => {
                             this.setState({
                               search: e.target.value,
@@ -263,8 +238,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                               </IconButton>
                             </InputAdornment>
                           }
-                          fullWidth
-                        />
+                          fullWidth />
                       </FormControl>
                     </NoSsr>
                   </Grid>
@@ -285,28 +259,13 @@ class Search extends React.Component<SearchProps, SearchState> {
               No Results, try adjusting your search query!
             </Alert>
           )}
-          <Hits
-            hits={this.state.searchResults}
-            bookmarks={this.props.bookmarks}
-          />
+          <Hits hits={this.state.searchResults} bookmarks={this.props.bookmarks}/>
           <br />
           <br />
           <br />
           <Fade in={!this.state.empty}>
-            <Grid
-              container
-              item
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-            >
-              <Pagination
-                count={10}
-                shape="rounded"
-                page={this.state.page}
-                onChange={this.pageChange}
-              />
+            <Grid container item direction="column" justifyContent="center" alignItems="center" xs={12}>
+              <Pagination count={10} shape="rounded" page={this.state.page} onChange={this.pageChange}/>
             </Grid>
           </Fade>
           <br />

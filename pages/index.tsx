@@ -1,26 +1,24 @@
-import SearchIcon from "@mui/icons-material/Search";
-import Collapse from "@mui/material/Collapse";
-import FormControl from "@mui/material/FormControl";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
-import LinearProgress from "@mui/material/LinearProgress";
-import NoSsr from "@mui/material/NoSsr";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Typography from "@mui/material/Typography";
-import { useSession } from "next-auth/client";
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
+import SearchIcon from '@mui/icons-material/Search';
+import Collapse from '@mui/material/Collapse';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import LinearProgress from '@mui/material/LinearProgress';
+import NoSsr from '@mui/material/NoSsr';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Typography from '@mui/material/Typography';
+import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
 
-import Account from "../components/account/account";
-import styles from "../styles/Home.module.css";
+import Account from '../components/account/account';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const router = useRouter();
-  const [session, loading] = useSession();
   const [search, setSearch] = React.useState("");
   const [searchLoading, setSearchLoading] = React.useState(false);
 
@@ -30,7 +28,7 @@ export default function Home() {
       router.push(`/search?q=${encodeURIComponent(search)}`);
     }
   };
-  const handleSearch = (e) => {
+  const handleSearch = () => {
     if (search.trim().length > 0) {
       setSearchLoading(true);
       router.push(`/search?q=${encodeURIComponent(search)}`);
@@ -41,35 +39,16 @@ export default function Home() {
     <>
       <Head>
         <title>Cosmos</title>
-        <meta
-          name="description"
-          content="Curated search engine for developers."
-        />
+        <meta name="description" content="Curated search engine for developers." />
         <link rel="icon" href="/favicon.ico" />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
 
       <main className={styles.main}>
         <Account />
-        <Grid
-          container
-          className={styles.grid}
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-        >
+        <Grid container className={styles.grid} justifyContent="center" alignItems="center" spacing={2}>
           <Grid item>
-            <Image
-              priority
-              className="logo"
-              src="/images/Logo.svg"
-              alt="Cosmos Logo"
-              width={320}
-              height={72}
-            />
+            <Image priority className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72} />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle1" component="div" align="center">
@@ -80,10 +59,7 @@ export default function Home() {
             <NoSsr>
               <FormControl variant="outlined" size="medium" fullWidth>
                 <InputLabel htmlFor="search-query">Search</InputLabel>
-                <OutlinedInput
-                  id="search-query"
-                  label="Search"
-                  value={search}
+                <OutlinedInput id="search-query" label="Search" value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
