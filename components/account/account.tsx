@@ -38,16 +38,20 @@ const Account = function () {
     setAnchorEl(null);
   };
 
+  const show = false;
   return (
-    <>
-      <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
-        {session ? <ArrowDropDownIcon /> : <ManageAccountsIcon />}
-      </IconButton>
-      <Menu id="account-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        {session
-          ? <MenuItem onClick={logout}>Logout</MenuItem>
-          : <MenuItem onClick={login}>Login</MenuItem>}
-      </Menu>
+    <> {
+      !show ? <></> : <>
+        <IconButton aria-label="Account" aria-controls="account-menu" aria-haspopup="true" onClick={handleClick} className={classes.icon}>
+          {session ? <ArrowDropDownIcon /> : <ManageAccountsIcon />}
+        </IconButton>
+        <Menu id="account-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+          {session
+            ? <MenuItem onClick={logout}>Logout</MenuItem>
+            : <MenuItem onClick={login}>Login</MenuItem>}
+        </Menu>
+      </>
+    }
     </>
   );
 };
