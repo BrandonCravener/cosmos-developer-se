@@ -1,12 +1,12 @@
 .hitContent {
-    padding: 0.75rem !important;
+  padding: 0.75rem !important;
 }
 .bookmarkButton {
-    padding: 0.5rem !important;
+  padding: 0.5rem !important;
 }
 .results {
-    flex-direction: column;
+  flex-direction: column;
 }
 .result {
-    width: 100%;
+  width: 100%;
 }

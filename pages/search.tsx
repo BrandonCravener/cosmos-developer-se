@@ -47,6 +47,7 @@ export interface SearchResult {
   thumbnail: string;
 }
 export interface SearchState {
+  availablePages: number;
   search: string;
   searchResults: SearchResult[];
   pagination: any[];
@@ -75,9 +76,10 @@ class Search extends React.Component<SearchProps, SearchState> {
     super(props);
 
     this.state = {
+      availablePages: 0,
       empty: true,
       loading: true,
-      page: 1,
+      page: 0,
       pagination: [],
       search: decodeURIComponent(String(this.props.router.query.q)),
       searchResults: [],
@@ -86,66 +88,92 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.pageChange = this.pageChange.bind(this);
   }
 
+  syncResults(currentPage, availablePages, pagination) {
+    // Clear search results
+    this.setState((prevState) => ({
+      availablePages: availablePages,
+      empty: false,
+      loading: false,
+      page: currentPage,
+      pagination: pagination,
+      search: prevState.search,
+      searchResults: [],
+    }));
+
+    const results = document.querySelectorAll(
+      ".gsc-webResult.gsc-result"
+    );
+
+    for (let i = 0; i < results.length; i += 1) {
+      const result = results[i].firstElementChild;
+
+      const title = result.querySelector("a").innerText;
+      const description = (
+        result.querySelector(
+          ".gsc-table-cell-snippet-close .gs-snippet"
+        ) as HTMLElement
+      ).innerHTML;
+      const url = result.querySelector("a").href;
+
+      let thumbnail = null;
+      if (result.querySelector("img")) {
+        thumbnail = result.querySelector("img").src;
+      }
+
+      //  Update search results
+      this.setState((prevState) => ({
+        availablePages: prevState.availablePages,
+        empty: prevState.empty,
+        loading: prevState.loading,
+        pagination: prevState.pagination,
+        search: prevState.search,
+        searchResults: [
+          ...prevState.searchResults,
+          {
+            description,
+            thumbnail,
+            title,
+            url,
+          },
+        ],
+      }));
+    }
+  }
+
   componentDidMount() {
+    // Observer to handle CSE results
     const observer = new MutationObserver((mutationsList) => {
+      // Itterate through mutations
       for (const mutationIndex in mutationsList) {
+        // Select current mutation
         const mutation = mutationsList[mutationIndex];
 
+        // Checks if pagination has been added
         if (
           (mutation as any).target.tagName === "DIV" &&
           mutation.addedNodes.length > 0 &&
           (mutation as any).addedNodes[0].className ===
-          "gsc-cursor-box gs-bidi-start-align"
+          "gcsc-more-maybe-branding-root"
         ) {
-          // Clear search results
-          this.setState((prevState) => ({
-            empty: false,
-            loading: false,
-            pagination: (mutation as any).addedNodes[0].firstChild.children,
-            search: prevState.search,
-            searchResults: [],
-          }));
 
-          const results = document.querySelectorAll(
-            ".gsc-webResult.gsc-result"
-          );
-
-          for (let i = 0; i < results.length; i += 1) {
-            const result = results[i].firstElementChild;
-
-            const title = result.querySelector("a").innerText;
-            const description = (
-              result.querySelector(
-                ".gsc-table-cell-snippet-close .gs-snippet"
-              ) as HTMLElement
-            ).innerHTML;
-            const url = result.querySelector("a").href;
-
-            let thumbnail = null;
-            if (result.querySelector("img")) {
-              thumbnail = result.querySelector("img").src;
-            }
-
-            //  Update search results
-            this.setState((prevState) => ({
-              empty: prevState.empty,
-              loading: prevState.loading,
-              pagination: prevState.pagination,
-              search: prevState.search,
-              searchResults: [
-                ...prevState.searchResults,
-                {
-                  description,
-                  thumbnail,
-                  title,
-                  url,
-                },
-              ],
-            }));
+          let currentPage = -1;
+          let availablePages = 0;
+          let pagination = [];
+          const paginationContainer = document.querySelector(".gsc-cursor-box.gs-bidi-start-align>div")
+          if (paginationContainer) {
+            // Number of pages
+            availablePages = paginationContainer.children.length;
+            // Current page
+            currentPage = Number.parseInt(document.querySelector(".gsc-cursor-box.gs-bidi-start-align>div>.gsc-cursor-current-page").textContent) - 1;
+            // Pagination
+            pagination = document.querySelector(".gsc-cursor-box.gs-bidi-start-align>div").children as any;
           }
-        } else if (
-          document.querySelectorAll(".gs-no-results-result").length > 0
-        ) {
+
+          // Sync results to Cosmos UI
+          this.syncResults(currentPage, availablePages, pagination);
+
+          // Check if results are empty
+        } else if (document.querySelectorAll(".gs-no-results-result").length > 0) {
           this.setState({
             empty: true,
             loading: false,
@@ -153,6 +181,7 @@ class Search extends React.Component<SearchProps, SearchState> {
         }
       }
     });
+    // Triggers observer on HTML update
     observer.observe(document.querySelector("html"), {
       childList: true,
       subtree: true,
@@ -185,9 +214,9 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   pageChange(event: React.ChangeEvent<unknown>, value: number) {
     this.setState({
-      page: value,
+      page: value - 1,
     });
-    this.triggerEvent(this.state.pagination[value], "click");
+    this.triggerEvent(this.state.pagination[value - 1], "click");
   }
 
   render() {
@@ -206,47 +235,22 @@ class Search extends React.Component<SearchProps, SearchState> {
           <ElevationScroll {...this.props}>
             <AppBar className={styles.appBar} position="sticky">
               <Toolbar>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+                <Grid container direction="row" justifyContent="center" alignItems="center">
                   <Link href="/">
                     <a className={styles.linkLogo}>
                       <Hidden mdDown>
-                        <Image
-                          className="logo"
-                          src="/images/Logo.svg"
-                          alt="Cosmos Logo"
-                          width={160.5}
-                          height={36}
-                        />
+                        <Image className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={160.5} height={36} />
                       </Hidden>
                       <Hidden mdUp>
-                        <Image
-                          className="logo"
-                          src="/images/NewSmallLogo.svg"
-                          alt="Cosmos Logo"
-                          width={36}
-                          height={36}
-                        />
+                        <Image className="logo" src="/images/NewSmallLogo.svg" alt="Cosmos Logo" width={36} height={36} />
                       </Hidden>
                     </a>
                   </Link>
                   <Grid item xs={10} md={7} lg={6}>
                     <NoSsr>
-                      <FormControl
-                        variant="outlined"
-                        size="small"
-                        margin="dense"
-                        fullWidth
-                      >
+                      <FormControl variant="outlined" size="small" margin="dense" fullWidth>
                         <InputLabel htmlFor="search-bar">Search</InputLabel>
-                        <OutlinedInput
-                          id="search-bar"
-                          label="Search"
-                          value={this.state.search}
+                        <OutlinedInput id="search-bar" label="Search" value={this.state.search}
                           onChange={(e) => {
                             this.setState({
                               search: e.target.value,
@@ -263,8 +267,7 @@ class Search extends React.Component<SearchProps, SearchState> {
                               </IconButton>
                             </InputAdornment>
                           }
-                          fullWidth
-                        />
+                          fullWidth />
                       </FormControl>
                     </NoSsr>
                   </Grid>
@@ -285,28 +288,13 @@ class Search extends React.Component<SearchProps, SearchState> {
               No Results, try adjusting your search query!
             </Alert>
           )}
-          <Hits
-            hits={this.state.searchResults}
-            bookmarks={this.props.bookmarks}
-          />
+          <Hits hits={this.state.searchResults} bookmarks={this.props.bookmarks} />
           <br />
           <br />
           <br />
           <Fade in={!this.state.empty}>
-            <Grid
-              container
-              item
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-            >
-              <Pagination
-                count={10}
-                shape="rounded"
-                page={this.state.page}
-                onChange={this.pageChange}
-              />
+            <Grid container item direction="column" justifyContent="center" alignItems="center" xs={12}>
+              <Pagination count={this.state.availablePages} shape="rounded" page={this.state.page + 1} onChange={this.pageChange} />
             </Grid>
           </Fade>
           <br />

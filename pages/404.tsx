@@ -1,10 +1,10 @@
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import styles from "../styles/Home.module.css";
+import styles from '../styles/Home.module.css';
 
 export default function Custom404() {
   return (
@@ -12,30 +12,13 @@ export default function Custom404() {
       <Head>
         <title>Cosmos - 404 Not Found</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
 
       <main className={styles.main}>
-        <Grid
-          container
-          className={styles.grid}
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={4}
-        >
+        <Grid container className={styles.grid} direction="column" justifyContent="center" alignItems="center" spacing={4}>
           <Grid item>
-            <Image
-              priority
-              className="logo"
-              src="/images/404.svg"
-              alt="404 Not Found"
-              width={720}
-              height={162}
-            />
+            <Image priority className="logo" src="/images/404.svg" alt="404 Not Found" width={720} height={162} />
           </Grid>
           <Grid item>
             <Link href="/" passHref>

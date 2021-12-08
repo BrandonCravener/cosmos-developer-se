@@ -1,9 +1,9 @@
-import * as THREE from "three";
+import * as THREE from 'three';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import NET from "vanta/dist/vanta.net.min";
-import styles from "./layout.module.css";
+import NET from 'vanta/dist/vanta.net.min';
+import styles from './layout.module.css';
 
 export default function Layout({ children }) {
   const [vantaEffect, setVantaEffect] = useState(0);
@@ -13,7 +13,7 @@ export default function Layout({ children }) {
       setVantaEffect(
         NET({
           el: bgRef.current,
-          THREE: THREE,
+          THREE,
           mouseControls: true,
           touchControls: true,
           gyroControls: true,
@@ -26,8 +26,8 @@ export default function Layout({ children }) {
           scaleMobile: 1.0,
           spacing: 20,
           points: 20,
-        })
-      )
+        }),
+      );
     }
   }, [vantaEffect]);
   return (
