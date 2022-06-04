@@ -1,12 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Image from "next/image";
-import { withRouter } from "next/router";
-import SearchBar from "../components/SearchBar";
-import styles from "../styles/Home.module.css";
+import SearchInput from "../components/SearchInput";
 import { HomeProps } from "../lib/types";
+import styles from "../styles/Home.module.css";
 
-const Home: NextPage<HomeProps> = ({ router }) => {
+const Home: NextPage<HomeProps> = () => {
   return (
     <>
       <Grid className={styles.fullGrid} spacing={2} justifyContent="center" alignItems="center" container>
@@ -19,11 +18,11 @@ const Home: NextPage<HomeProps> = ({ router }) => {
           </Typography>
         </Grid>
         <Grid item xs={11} md={6} lg={4}>
-          <SearchBar />
+          <SearchInput />
         </Grid>
       </Grid>
     </>
   );
 };
 
-export default withRouter(Home);
+export default Home;

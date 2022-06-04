@@ -20,7 +20,7 @@ function Layout({ children }: LayoutProps) {
           gyroControls: true,
           minHeight: 200.0,
           minWidth: 200.0,
-          maxDistance: 5,
+          maxDistance: 10,
           backgroundAlpha: 0,
           color: 0xffc107,
           scale: 1.0,
