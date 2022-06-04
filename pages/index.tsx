@@ -1,88 +1,29 @@
-import SearchIcon from '@mui/icons-material/Search';
-import Collapse from '@mui/material/Collapse';
-import FormControl from '@mui/material/FormControl';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import LinearProgress from '@mui/material/LinearProgress';
-import NoSsr from '@mui/material/NoSsr';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Typography from '@mui/material/Typography';
-import Head from 'next/head';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Grid, Typography } from "@mui/material";
+import type { NextPage } from "next";
+import Image from "next/image";
+import { withRouter } from "next/router";
+import SearchBar from "../components/SearchBar";
+import styles from "../styles/Home.module.css";
+import { HomeProps } from "../lib/types";
 
-import Account from '../components/account/account';
-import styles from '../styles/Home.module.css';
-
-export default function Home() {
-  const router = useRouter();
-  const [search, setSearch] = React.useState("");
-  const [searchLoading, setSearchLoading] = React.useState(false);
-
-  const handleSearchKeyDown = (e) => {
-    if (e.key == "Enter" && search.trim().length > 0) {
-      setSearchLoading(true);
-      router.push(`/search?q=${encodeURIComponent(search)}`);
-    }
-  };
-  const handleSearch = () => {
-    if (search.trim().length > 0) {
-      setSearchLoading(true);
-      router.push(`/search?q=${encodeURIComponent(search)}`);
-    }
-  };
-
+const Home: NextPage<HomeProps> = ({ router }) => {
   return (
     <>
-      <Head>
-        <title>Cosmos</title>
-        <meta name="description" content="Curated search engine for developers." />
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
-
-      <main className={styles.main}>
-        <Account />
-        <Grid container className={styles.grid} justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
-            <Image priority className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72} />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" component="div" align="center">
-              <i>Custom search engine curated towards developers.</i>
-            </Typography>
-          </Grid>
-          <Grid item xs={11} md={6} lg={4}>
-            <NoSsr>
-              <FormControl variant="outlined" size="medium" fullWidth>
-                <InputLabel htmlFor="search-query">Search</InputLabel>
-                <OutlinedInput id="search-query" label="Search" value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                  onKeyDown={handleSearchKeyDown}
-                  endAdornment={
-                    <InputAdornment position="end" onClick={handleSearch}>
-                      <IconButton aria-label="Search for results" size="large">
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  disabled={searchLoading}
-                  fullWidth
-                />
-              </FormControl>
-            </NoSsr>
-            <br />
-            <Collapse in={searchLoading}>
-              <LinearProgress />
-            </Collapse>
-          </Grid>
+      <Grid className={styles.fullGrid} spacing={2} justifyContent="center" alignItems="center" container>
+        <Grid item>
+          <Image priority className="logo" src="/images/Logo.svg" alt="Cosmos Logo" width={320} height={72} />
         </Grid>
-      </main>
+        <Grid item xs={12}>
+          <Typography variant="subtitle1" component="div" align="center">
+            <i>Custom search engine for developers.</i>
+          </Typography>
+        </Grid>
+        <Grid item xs={11} md={6} lg={4}>
+          <SearchBar />
+        </Grid>
+      </Grid>
     </>
   );
-}
+};
+
+export default withRouter(Home);
