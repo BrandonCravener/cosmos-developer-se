@@ -1,10 +1,10 @@
 import { FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { useRouter } from "next/router";
-import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from "react";
-import { SearchBarProps } from "../lib/types";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useState } from "react";
+import { SearchInputProps } from "../lib/types";
 import { SearchIconButton } from "./IconButtons";
 
-function SearchInput(props: SearchBarProps) {
+function SearchInput(props: SearchInputProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
 
@@ -21,14 +21,22 @@ function SearchInput(props: SearchBarProps) {
     if (e.key == "Enter") completeSearch();
   };
 
+  useEffect(() => {
+    const searchQuery = router.query["q"] as string;
+    if (searchQuery == undefined) setSearch("");
+    else setSearch(searchQuery);
+  }, [router.query]);
+
   return (
     <>
-      <FormControl variant="outlined" size="medium" fullWidth>
+      {console.log(router.query)}
+      <FormControl variant="outlined" {...props} fullWidth>
         <InputLabel htmlFor="search-query">Search</InputLabel>
         <OutlinedInput
           endAdornment={SearchIconButton(completeSearch)}
           onChange={inputChange}
           onKeyDown={inputKeyDown}
+          value={search}
           id="search-query"
           label="Search"
           fullWidth
