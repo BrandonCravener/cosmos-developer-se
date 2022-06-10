@@ -20,6 +20,9 @@ export interface LayoutProps {
   children: ReactNode;
 }
 export interface NavBarProps {}
+export interface ResultsProps {
+  searchResults: SearchResult[];
+}
 export interface SearchEngineProps {
   cseURI: string;
 }

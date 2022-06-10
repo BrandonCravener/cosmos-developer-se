@@ -3,9 +3,37 @@
 @import '@fontsource/roboto/500.css';
 @import '@fontsource/roboto/700.css';
 
+
 .logo {
     user-select: none;
     pointer-events: none;
     filter: invert(100%);
     -webkit-filter: invert(100%);
+}
+
+/* Google Search Results */
+.gsc-control-cse {
+    display: none !important;
+}
+
+/* Custom MUI CSS */
+.MuiAppBar-root:not(.MuiAppBar-colorTransparent) {
+    background-color: rgba(1, 1, 1, 0.9) !important;
+    backdrop-filter: blur(0.75rem) !important;
+}
+
+.MuiAppBar-root {
+    transition: color 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+        background-color 0.3s cubic-bezier(0.33, 1, 0.68, 1) !important;
+}
+
+.MuiFilledInput-root {
+    border-top-left-radius: 0.6rem !important;
+    border-top-right-radius: 0.6rem !important;
+}
+
+.MuiPaper-elevation1 {
+    box-shadow: 0px 2px 1px -1px rgb(225 111 0 / 20%),
+        0px 1px 1px 0px rgb(225 111 0 / 14%), 0px 1px 3px 0px rgb(225 111 0 / 12%) !important;
+    transition: box-shadow 0.3s cubic-bezier(0.33, 1, 0.68, 1) !important;
 }

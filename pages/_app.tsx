@@ -18,10 +18,7 @@ function MyApp({ Component, pageProps }: CosAppProps) {
       <CacheProvider value={emotionCache}>
         <Head>
           <title>Cosmos</title>
-          <meta
-            name="description"
-            content="Curated search engine for developers."
-          />
+          <meta name="description" content="Curated search engine for developers." />
           <link rel="icon" href="/favicon.ico" />
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>

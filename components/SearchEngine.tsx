@@ -1,6 +1,9 @@
+import { Grid, Pagination } from "@mui/material";
+import { Box } from "@mui/system";
 import Script from "next/script";
-import { Component } from "react";
+import { ChangeEvent, Component } from "react";
 import { SearchEngineProps, SearchEngineState } from "../lib/types";
+import Results from "./Results";
 
 class SearchEngine extends Component<SearchEngineProps, SearchEngineState> {
   constructor(props: SearchEngineProps) {
@@ -78,11 +81,31 @@ class SearchEngine extends Component<SearchEngineProps, SearchEngineState> {
     }
   }
 
+  pageChange = (event: ChangeEvent<unknown>, value: number) => {
+    this.setState({
+      page: value - 1,
+    });
+
+    (this.state.pagination![value - 1] as HTMLElement).click();
+    window.scrollTo(0, 0);
+  };
+
   render() {
     return (
       <>
         <Script src={this.props.cseURI}></Script>
         <div className="gcse-searchresults-only"></div>
+        <Box mt={2}>
+          <Results searchResults={this.state.searchResults}></Results>
+        </Box>
+        <Grid container item direction="column" justifyContent="center" alignItems="center" xs={12} p={4}>
+          <Pagination
+            count={this.state.totalPages}
+            shape="rounded"
+            page={this.state.page + 1}
+            onChange={this.pageChange}
+          />
+        </Grid>
       </>
     );
   }
