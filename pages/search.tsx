@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import dynamic from "next/dynamic";
 import NavBar from "../components/NavBar";
 import SearchEngine from "../components/SearchEngine";
 import { SearchProps } from "../lib/types";

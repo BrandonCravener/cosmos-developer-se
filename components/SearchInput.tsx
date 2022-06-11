@@ -11,7 +11,9 @@ function SearchInput(props: SearchInputProps) {
   const completeSearch = (e?: MouseEvent<HTMLButtonElement>) => {
     if (search.trim().length == 0) return;
 
-    router.push(`/search?q=${encodeURIComponent(search)}`);
+    router.push(`/search?q=${encodeURIComponent(search)}`).then(() => {
+      router.reload();
+    });
   };
 
   const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +31,6 @@ function SearchInput(props: SearchInputProps) {
 
   return (
     <>
-      {console.log(router.query)}
       <FormControl variant="outlined" {...props} fullWidth>
         <InputLabel htmlFor="search-query">Search</InputLabel>
         <OutlinedInput

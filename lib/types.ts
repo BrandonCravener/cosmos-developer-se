@@ -28,6 +28,7 @@ export interface SearchEngineProps {
 }
 export interface SearchEngineState {
   page: number;
+  loading: boolean;
   totalPages: number;
   pagination: HTMLCollection | null;
   searchResults: SearchResult[];
