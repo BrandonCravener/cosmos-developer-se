@@ -1,0 +1,7 @@
+.result {
+    width: 100%;
+}
+
+.resultsContainer {
+    flex-direction: column;
+}
